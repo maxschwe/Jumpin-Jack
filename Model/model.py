@@ -1,4 +1,5 @@
 import pygame
+from Model.player import Player
 
 class Model:
     def __init__(self, width, height, speed):
@@ -9,8 +10,10 @@ class Model:
         self.background = pygame.transform.scale(background_unscaled, (self.width, self.height))
         self.background_x = 0
         self.speed = speed
+        self.jumping = False
+        self.player = Player(300, 600, 120, 120) 
         
-    def add_observer(self, observer):
+    def add_observer(self, observer): 
         self.observers.append(observer)
         
     def remove_observer(self, observer):
@@ -27,12 +30,14 @@ class Model:
         self.background_x += self.speed
         if self.background_x > self.width:
             self.background_x -= self.width
+        self.player.left()
         self.update_observers()
     
     def right_key(self):
         self.background_x -= self.speed
         if self.background_x < -self.width:
             self.background_x += self.width
+        self.player.right()
         self.update_observers()
     
     def up_key(self):
@@ -42,4 +47,10 @@ class Model:
         pass
     
     def space_key(self):
-        pass
+        self.player.space()
+
+    def update(self):
+        self.player.update()
+        self.update_observers()
+
+                

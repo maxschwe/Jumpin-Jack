@@ -19,12 +19,15 @@ class Controller:
             keys = pygame.key.get_pressed()
             if keys[K_LEFT]:
                 self.model.left_key()
-            elif keys[K_RIGHT]:
+            if keys[K_RIGHT]:
                 self.model.right_key()
-            elif keys[K_UP]:
+            if keys[K_UP]:
                 self.model.up_key()
-            elif keys[K_DOWN]:
+            if keys[K_DOWN]:
                 self.model.down_key()
-            elif keys[K_SPACE]:
+            if keys[K_SPACE]:
                 self.model.space_key()
+            self.model.update()
             self.clock.tick(self.fps)
+        
+    
