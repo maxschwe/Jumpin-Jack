@@ -6,6 +6,9 @@ import pygame
 from Model.modelbeobachter import ModelBeobachter
 
 
+HITBOXES_ON = False
+
+
 class View(ModelBeobachter):
     def __init__(self, model):
         self.model = model
@@ -19,6 +22,10 @@ class View(ModelBeobachter):
         self.window.fill((0, 0, 0))
         self.repaint_background()
         self.repaint_player()
+        self.repaint_obstacle()
+        if HITBOXES_ON:
+            self.repaint_hitboxes()
+            
         pygame.display.update()
         
     def repaint_background(self):
@@ -26,8 +33,15 @@ class View(ModelBeobachter):
         self.window.blit(self.model.background, (self.model.background_x, 0))
         self.window.blit(self.model.background, (self.model.background_x + self.model.width, 0))
         
-    def repaint_player(self):
-        self.window.blit(self.model.player.current_animation,self.model.player.get_properties())
+    def repaint_hitboxes(self):
+        pygame.draw.rect(self.window, (255, 0, 0), self.model.player.hitbox, 2)
         
+    def repaint_player(self):
+        self.window.blit(self.model.player.current_animation, self.model.player.coords)
+        
+    def repaint_obstacle(self):
+        pygame.draw.rect(self.window, (0, 255, 0), self.model.obstacle.coords)
+        
+
     def update(self):
         self.repaint()
