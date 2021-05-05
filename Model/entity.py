@@ -16,6 +16,6 @@ class Entity:
         self.coords.move_ip(x, y)
         self.hitbox.move_ip(x, y)
         
-    def check_collision(self, object):
-        return self.hitbox.colliderect(object.hitbox) #hitbox = Rechteck 1 object = Rechteck 2
+    def check_collision(self, object_hitbox):
+        return self.hitbox.colliderect(object_hitbox) #hitbox = Rechteck 1 object = Rechteck 2
           

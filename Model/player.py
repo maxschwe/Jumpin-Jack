@@ -20,7 +20,7 @@ class Player(Entity):
         if not self.jumping:
             self.jumping = True 
             
-    def left(self):
+    def left(self): # animation
         if not self.jumping:
             if self.walk_dir == "right":
                 self.walk_pos = 0
@@ -57,7 +57,7 @@ class Player(Entity):
                 self.jumping = False
                 self.jump_pos = -10
                 pass
-            else: # kleiner als 1
+            else: # kleiner als 10
                 faktor = 0.25 * round(self.jump_pos ** 2, 2)
                 if self.jump_pos < 0:
                     faktor = -faktor

@@ -9,11 +9,12 @@ class Model:
         self.observers = []
         background_unscaled = pygame.image.load("Images/hintergrund.png")
         self.background = pygame.transform.scale(background_unscaled, (self.width, self.height))
-        self.background_x = 0
+        self.x = 300
         self.speed = speed
         self.jumping = False
-        self.player = Player((300, 480, 120, 120), (30, 20, 60, 100)) #1.Tupel: Coords, 2.Tupel: Hitbox-Coords
-        self.obstacle = Obstacle((800, 400, 300, 200), self.speed)
+        self.player = Player((300, 480, 120, 120), (35, 25, 50, 95)) #1.Tupel: Coords, 2.Tupel: Hitbox-Coords
+        self.obstacle = Obstacle((800, 500, 200, 100))
+        self.alive = True
         
     def add_observer(self, observer): 
         self.observers.append(observer)
@@ -29,21 +30,29 @@ class Model:
         return (self.width, self.height)
     
     def left_key(self):
-        self.background_x += self.speed
-        if self.background_x > self.width:
-            self.background_x -= self.width
+        self.x -= self.speed
         self.player.left()
-        self.obstacle.left()
+        real_hitbox = self.obstacle.hitbox.move(-self.x, 0)
+        collided = self.player.check_collision(real_hitbox)
+        if collided:
+            change = (real_hitbox.x + real_hitbox.width) - self.player.hitbox.x
+            self.x += change
         self.update_observers()
+        self.alive = not collided
+        return self.alive
     
     def right_key(self):
-        self.background_x -= self.speed
-        if self.background_x < -self.width:
-            self.background_x += self.width
-        self.player.right()
-        self.obstacle.right()
+        self.x += self.speed
+        self.player.right() 
+        real_hitbox = self.obstacle.hitbox.move(-self.x, 0)
+        collided =  self.player.check_collision(real_hitbox)
+        if collided:
+            change = (self.player.hitbox.x + self.player.hitbox.width) - real_hitbox.x
+            self.x -= change 
         self.update_observers()
-    
+        self.alive = not collided
+        return self.alive
+            
     def up_key(self):
         pass
     
@@ -60,7 +69,11 @@ class Model:
 
     def update(self):
         self.player.update()
-        self.check_collisions()
-        self.update_observers()
+        if self.alive:
+            self.update_observers()
+
+    def restart(self):
+        self.alive = True
+        self.x = 300
 
                 

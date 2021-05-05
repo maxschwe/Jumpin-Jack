@@ -10,23 +10,28 @@ class Controller:
         self.fps = fps
         self.clock = pygame.time.Clock()
         self.running = True
+        self.alive = True
         
     def run(self):
-        while self.running:
+        while self.running: 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
             keys = pygame.key.get_pressed()
-            if keys[K_LEFT]:
-                self.model.left_key()
-            if keys[K_RIGHT]:
-                self.model.right_key()
-            if keys[K_UP]:
-                self.model.up_key()
-            if keys[K_DOWN]:
-                self.model.down_key()
-            if keys[K_SPACE]:
-                self.model.space_key()
+            if self.alive:
+                if keys[K_LEFT]:
+                    self.alive = self.model.left_key()
+                if keys[K_RIGHT]:
+                    self.alive = self.model.right_key()         
+                if keys[K_SPACE]:
+                    self.model.space_key()
+                if not self.alive:
+                    self.view.show_death_screen()
+            
+            if keys[K_RETURN]:
+                self.model.restart()
+                self.alive = True
+
             self.model.update()
             self.clock.tick(self.fps)
         
