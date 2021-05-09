@@ -4,9 +4,9 @@ import pygame
 from pygame.constants import *
 
 class Controller:
-    def __init__(self, width, height, fps, speed):
+    def __init__(self, width, height, fps, speed, player_left, player_bottom):
         self.model = Model(width, height, speed)
-        self.view = View(self.model)
+        self.view = View(self.model, player_left, player_bottom)
         self.fps = fps
         self.clock = pygame.time.Clock()
         self.running = True

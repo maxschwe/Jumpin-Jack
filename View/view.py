@@ -10,8 +10,10 @@ HITBOXES_ON = True
 
 
 class View(ModelBeobachter):
-    def __init__(self, model):
+    def __init__(self, model, player_left, player_bottom):
         self.model = model
+        self.player_left = player_left
+        self.player_bottom = player_bottom
         self.model.add_observer(self)
         self.dimensions = self.model.get_dimension()
         self.window = pygame.display.set_mode(self.dimensions)
@@ -33,15 +35,24 @@ class View(ModelBeobachter):
         self.window.blit(self.model.background, (1000 - (self.model.x % 1000), 0))
         
     def repaint_player(self):
-        self.window.blit(self.model.player.current_animation, self.model.player.coords)
+        rect = self.reposition(self.model.player.coords, False)
+        self.window.blit(self.model.player.current_animation, rect)
+        
+    def reposition(self, rect, relative=True):
+        if relative:
+            return rect.move(self.player_left - self.model.x, self.player_bottom)
+        else:
+            return rect.move(self.player_left, self.player_bottom)
         
     def repaint_obstacle(self):
-        x = - self.model.x + 265
-        pygame.draw.rect(self.window, (0, 255, 0), self.model.obstacle.coords.move(x, 0)) # coords von objekt bleibt konstant
+        rect = self.reposition(self.model.obstacle.coords)
+        pygame.draw.rect(self.window, (0, 255, 0), rect) # coords von objekt bleibt konstant
 
     def repaint_hitboxes(self):
-        pygame.draw.rect(self.window, (255, 0, 0), self.model.player.hitbox, 2)
-        pygame.draw.rect(self.window, (255, 0, 0), self.model.obstacle.hitbox.move(- (self.model.x - 265), 0), 2)
+        rect = self.reposition(self.model.player.hitbox, False)
+        pygame.draw.rect(self.window, (255, 0, 0), rect, 2)
+        rect = self.reposition(self.model.obstacle.hitbox)
+        pygame.draw.rect(self.window, (255, 0, 0), rect, 2)
         
     def show_death_screen(self):
         game_over_text = pygame.font.SysFont(None, 80)

@@ -9,14 +9,14 @@ class Model:
         self.observers = []
         background_unscaled = pygame.image.load("Images/hintergrund.png")
         self.background = pygame.transform.scale(background_unscaled, (self.width, self.height))
-        self.x = 300
-        self.y = 600
+        self.x = 0
+        self.y = 0
         self.dx = 0
         self.dy = 0
         self.speed = speed
         self.jumping = False
-        self.player = Player((265, 480, 120, 120), (35, 25, 50, 95), jump_force=15, gravity=1) #1.Tupel: Coords, 2.Tupel: Hitbox-Coords
-        self.obstacle = Obstacle((800, 550, 200, 50))
+        self.player = Player((0, 0, 120, 120), (35, 25, 50, 95), jump_force=15, gravity=1) #1.Tupel: Coords, 2.Tupel: Hitbox-Coords
+        self.obstacle = Obstacle((300, 0, 200, 50))
         self.alive = True
         
     def add_observer(self, observer): 
@@ -66,6 +66,6 @@ class Model:
 
     def restart(self):
         self.alive = True
-        self.x = 300
+        self.x = 0
 
                 

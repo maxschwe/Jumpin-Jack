@@ -67,9 +67,8 @@ class Player(Entity):
         # check if player collides with objects by y-direction
         for obstacle in current_obstacles:
             predicted_rect = self.hitbox.copy()
-            predicted_rect.x = x_screen + 35 + dx_screen
+            predicted_rect.x += x_screen + dx_screen
             predicted_rect.y += self.dy
-            print(predicted_rect)
             if obstacle.check_collision(predicted_rect):
                 # wenns in y-richtung überschneidet
                 if self.dy > 0: # moves down
