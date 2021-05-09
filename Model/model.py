@@ -10,10 +10,13 @@ class Model:
         background_unscaled = pygame.image.load("Images/hintergrund.png")
         self.background = pygame.transform.scale(background_unscaled, (self.width, self.height))
         self.x = 300
+        self.y = 600
+        self.dx = 0
+        self.dy = 0
         self.speed = speed
         self.jumping = False
-        self.player = Player((300, 480, 120, 120), (35, 25, 50, 95)) #1.Tupel: Coords, 2.Tupel: Hitbox-Coords
-        self.obstacle = Obstacle((800, 500, 200, 100))
+        self.player = Player((265, 480, 120, 120), (35, 25, 50, 95), jump_force=15, gravity=1) #1.Tupel: Coords, 2.Tupel: Hitbox-Coords
+        self.obstacle = Obstacle((800, 550, 200, 50))
         self.alive = True
         
     def add_observer(self, observer): 
@@ -30,27 +33,17 @@ class Model:
         return (self.width, self.height)
     
     def left_key(self):
-        self.x -= self.speed
+        self.dx -= self.speed
         self.player.left()
-        real_hitbox = self.obstacle.hitbox.move(-self.x, 0)
-        collided = self.player.check_collision(real_hitbox)
-        if collided:
-            change = (real_hitbox.x + real_hitbox.width) - self.player.hitbox.x
-            self.x += change
         self.update_observers()
-        self.alive = not collided
+        self.alive = True
         return self.alive
     
     def right_key(self):
-        self.x += self.speed
-        self.player.right() 
-        real_hitbox = self.obstacle.hitbox.move(-self.x, 0)
-        collided =  self.player.check_collision(real_hitbox)
-        if collided:
-            change = (self.player.hitbox.x + self.player.hitbox.width) - real_hitbox.x
-            self.x -= change 
+        self.dx += self.speed
+        self.player.right()
         self.update_observers()
-        self.alive = not collided
+        self.alive = True
         return self.alive
             
     def up_key(self):
@@ -61,16 +54,15 @@ class Model:
     
     def space_key(self):
         self.player.space()
-        
-    def check_collisions(self):
-        collision = self.player.check_collision(self.obstacle)
-        if collision:
-            print('collided')
 
     def update(self):
-        self.player.update()
+        self.player.update(self.x, self.y, self.dx, [self.obstacle])
+        self.x += self.dx
+        self.y += self.dy
         if self.alive:
             self.update_observers()
+        self.dx = 0
+        self.dy = 0
 
     def restart(self):
         self.alive = True

@@ -36,12 +36,12 @@ class View(ModelBeobachter):
         self.window.blit(self.model.player.current_animation, self.model.player.coords)
         
     def repaint_obstacle(self):
-        x = self.model.x
-        pygame.draw.rect(self.window, (0, 255, 0), self.model.obstacle.coords.move(-x, 0)) # coords von objekt bleibt konstant
+        x = - self.model.x + 265
+        pygame.draw.rect(self.window, (0, 255, 0), self.model.obstacle.coords.move(x, 0)) # coords von objekt bleibt konstant
 
     def repaint_hitboxes(self):
         pygame.draw.rect(self.window, (255, 0, 0), self.model.player.hitbox, 2)
-        pygame.draw.rect(self.window, (255, 0, 0), self.model.obstacle.hitbox.move(-self.model.x, 0), 2)
+        pygame.draw.rect(self.window, (255, 0, 0), self.model.obstacle.hitbox.move(- (self.model.x - 265), 0), 2)
         
     def show_death_screen(self):
         game_over_text = pygame.font.SysFont(None, 80)
