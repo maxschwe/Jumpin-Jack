@@ -12,8 +12,6 @@ class Entity:
             hitbox_width = coords_hitbox[2]
             hitbox_height = coords_hitbox[3]
             self.hitbox = pygame.Rect(hitbox_x, hitbox_y, hitbox_width, hitbox_height)
-            print(self.coords)
-            print(self.hitbox)
             
     def move(self, x, y):
         self.coords.move_ip(x, y)

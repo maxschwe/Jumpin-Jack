@@ -1,13 +1,13 @@
 import pygame
-from Model.player import Player
-from Model.obstacle import Obstacle
+from Model.Entity.player import Player
+from Model.Entity.obstacle import Obstacle
 
 class Model:
     def __init__(self, width, height, speed):
         self.width = width
         self.height = height
         self.observers = []
-        background_unscaled = pygame.image.load("Images/hintergrund.png")
+        background_unscaled = pygame.image.load("Images/hintergrund2.png")
         self.background = pygame.transform.scale(background_unscaled, (self.width, self.height))
         self.x = 0
         self.y = 0
@@ -15,8 +15,8 @@ class Model:
         self.dy = 0
         self.speed = speed
         self.jumping = False
-        self.player = Player((0, 0, 120, 120), (35, 25, 50, 95), jump_force=15, gravity=1) #1.Tupel: Coords, 2.Tupel: Hitbox-Coords
-        self.obstacle = Obstacle((300, 0, 200, 50))
+        self.player = Player((0, 0, 120, 120), (35, 29, 50, 93), jump_force=20, gravity=1)
+        self.obstacle = Obstacle((300, -100, 200, 50))
         self.alive = True
         
     def add_observer(self, observer): 
@@ -56,7 +56,7 @@ class Model:
         self.player.space()
 
     def update(self):
-        self.player.update(self.x, self.y, self.dx, [self.obstacle])
+        self.dx = self.player.update(self.x, self.y, self.dx, [self.obstacle])
         self.x += self.dx
         self.y += self.dy
         if self.alive:

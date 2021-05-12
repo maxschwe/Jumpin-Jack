@@ -1,4 +1,4 @@
-from Model.entity import Entity
+from Model.Entity.entity import Entity
 
 class Obstacle(Entity):
     def __init__(self, hitbox_coords):

@@ -31,8 +31,8 @@ class View(ModelBeobachter):
         pygame.display.update()
         
     def repaint_background(self):
-        self.window.blit(self.model.background, (- (self.model.x % 1000), 0))
-        self.window.blit(self.model.background, (1000 - (self.model.x % 1000), 0))
+        self.window.blit(self.model.background, (- (self.model.x % self.model.width), 0))
+        self.window.blit(self.model.background, (self.model.width - (self.model.x % self.model.width), 0))
         
     def repaint_player(self):
         rect = self.reposition(self.model.player.coords, False)

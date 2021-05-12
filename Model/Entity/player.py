@@ -1,5 +1,5 @@
 import pygame
-from Model.entity import Entity
+from Model.Entity.entity import Entity
 
 AMOUNT_PICTURES = 9
 PATH_IMAGES = "Images/Player/"
@@ -32,6 +32,8 @@ class Player(Entity):
                 self.walk_pos += 1
             else:
                 self.walk_pos = 0
+        else:
+            self.walk_pos = 0
         if self.walk_dir == "right":
             self.walk_dir = "left"
         self.update_current_animation()
@@ -70,28 +72,37 @@ class Player(Entity):
             predicted_rect.x += x_screen + dx_screen
             predicted_rect.y += self.dy
             if obstacle.check_collision(predicted_rect):
-                # wenns in y-richtung überschneidet
-                if self.dy > 0: # moves down
+                if self.hitbox.bottom <= obstacle.hitbox.top and predicted_rect.bottom > obstacle.hitbox.top: #previous above, now collided (jumps from above)
                     self.dy = obstacle.hitbox.top - self.hitbox.bottom
-                    
-                elif self.dy < 0: # moves up 
+                    self.jumping = False
+                elif self.hitbox.top >= obstacle.hitbox.bottom and predicted_rect.top < obstacle.hitbox.bottom: #previous below, now collided
                     self.dy = obstacle.hitbox.bottom - self.hitbox.top
-                self.jumping = False
+                    self.jumping = False
+                    
+                elif (self.hitbox.right + x_screen) <= obstacle.hitbox.left and predicted_rect.right > obstacle.hitbox.left: # move right
+                    dx_screen = obstacle.hitbox.left - (self.hitbox.right + x_screen)
+            
+                elif (self.hitbox.left + x_screen) >= obstacle.hitbox.right and predicted_rect.left < obstacle.hitbox.right: # move left
+                    dx_screen = obstacle.hitbox.right - (self.hitbox.left + x_screen)
             else:
                 self.jumping = True
+            
+
         # check if player is on bottom
         if predicted_rect.bottom > y_screen:
             self.hitbox.bottom = y_screen
             self.coords.bottom = y_screen
             self.dy = 0
             self.jumping = False
-
-                        
+        
+        return dx_screen
+            
     def update(self, x_screen, dx_screen, y_screen, current_obstacles):
         self.dy = 0
         self.physics()
-        self.adjust_collision_values(x_screen, dx_screen, y_screen, current_obstacles)
+        dx_screen = self.adjust_collision_values(x_screen, dx_screen, y_screen, current_obstacles)
         self.move(0, self.dy)
+        return dx_screen
         # self.check_collision_horizontal(x_pos_player)
     
     def load_animation_img(self):
