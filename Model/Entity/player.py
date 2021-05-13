@@ -86,14 +86,17 @@ class Player(Entity):
                     dx_screen = obstacle.hitbox.right - (self.hitbox.left + x_screen)
             else:
                 self.jumping = True
-            
-
+        
         # check if player is on bottom
         if predicted_rect.bottom > y_screen:
             self.hitbox.bottom = y_screen
             self.coords.bottom = y_screen
             self.dy = 0
             self.jumping = False
+            
+        if predicted_rect.left < 0:
+            self.hitbox.left = 0
+            self.coords.left = 0
         
         return dx_screen
             
