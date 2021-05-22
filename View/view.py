@@ -6,7 +6,7 @@ import pygame
 from Model.modelbeobachter import ModelBeobachter
 
 
-HITBOXES_ON = True
+HITBOXES_ON = False
 
 
 class View(ModelBeobachter):

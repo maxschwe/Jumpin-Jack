@@ -67,25 +67,26 @@ class Player(Entity):
         
     def adjust_collision_values(self, x_screen, y_screen, dx_screen, current_obstacles):
         # check if player collides with objects by y-direction
+        collided = False
         for obstacle in current_obstacles:
             predicted_rect = self.hitbox.copy()
             predicted_rect.x += x_screen + dx_screen
             predicted_rect.y += self.dy
+            
             if obstacle.check_collision(predicted_rect):
                 if self.hitbox.bottom <= obstacle.hitbox.top and predicted_rect.bottom > obstacle.hitbox.top: #previous above, now collided (jumps from above)
+                    collided = True
                     self.dy = obstacle.hitbox.top - self.hitbox.bottom
-                    self.jumping = False
                 elif self.hitbox.top >= obstacle.hitbox.bottom and predicted_rect.top < obstacle.hitbox.bottom: #previous below, now collided
+                    self.vel_y = 0
                     self.dy = obstacle.hitbox.bottom - self.hitbox.top
-                    self.jumping = False
                     
                 elif (self.hitbox.right + x_screen) <= obstacle.hitbox.left and predicted_rect.right > obstacle.hitbox.left: # move right
                     dx_screen = obstacle.hitbox.left - (self.hitbox.right + x_screen)
             
                 elif (self.hitbox.left + x_screen) >= obstacle.hitbox.right and predicted_rect.left < obstacle.hitbox.right: # move left
                     dx_screen = obstacle.hitbox.right - (self.hitbox.left + x_screen)
-            else:
-                self.jumping = True
+        self.jumping = not collided
         
         # check if player is on bottom
         if predicted_rect.bottom > y_screen:
@@ -95,8 +96,7 @@ class Player(Entity):
             self.jumping = False
             
         if predicted_rect.left < 0:
-            self.hitbox.left = 0
-            self.coords.left = 0
+            dx_screen = - self.hitbox.left
         
         return dx_screen
             

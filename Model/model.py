@@ -63,7 +63,7 @@ class Model:
         return self.world.get_current_obstacles_view()
 
     def update(self):
-        self.dx = self.player.update(self.x, self.y, self.dx, [self.world.get_current_obstacles(self.x + self.dx, self.player.hitbox.width)])
+        self.dx = self.player.update(self.x, self.y, self.dx, self.world.get_current_obstacles(self.x + self.dx, self.player.hitbox.width))
         self.x += self.dx
         self.y += self.dy
         self.world.update(self.x)
