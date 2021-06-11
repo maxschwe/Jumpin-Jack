@@ -8,8 +8,10 @@ class Model:
         self.width = width
         self.height = height
         self.observers = []
-        background_unscaled = pygame.image.load("Images/hintergrund2.png")
+        background_unscaled = pygame.image.load("Images/hintergrund.png")
         self.background = pygame.transform.scale(background_unscaled, (self.width, self.height))
+        self.objects_img = pygame.image.load("Images/objects.png")
+        self.objects_img = pygame.transform.scale(self.objects_img, (1000, 400))
         self.x = 0
         self.y = 0
         self.dx = 0
@@ -29,9 +31,6 @@ class Model:
     def update_observers(self):
         for observer in self.observers:
             observer.update()
-            
-    def generate_chunk(self):        
-        self.world.add_chunk(0)
 
     def get_dimension(self):
         return (self.width, self.height)

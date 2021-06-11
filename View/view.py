@@ -43,7 +43,8 @@ class View(ModelBeobachter):
     def repaint_obstacles(self):
         for obstacle in self.model.get_obstacles_view():
             rect = self.reposition(obstacle.coords)
-            pygame.draw.rect(self.window, (0, 255, 0), rect) # coords von objekt bleibt konstant
+            # pygame.draw.rect(self.window, (0, 255, 0), rect) # coords von objekt bleibt konstant
+            self.window.blit(self.model.objects_img, (rect[0], rect[1]), (0, 0, rect[2], rect[3]), 0)
             if HITBOXES_ON:
                 rect = self.reposition(obstacle.hitbox)
                 pygame.draw.rect(self.window, (255, 0, 0), rect, 2)

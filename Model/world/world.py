@@ -3,21 +3,28 @@ from Model.Entity.obstacle import Obstacle
 
 class World:
     def __init__(self):
-        self.loaded_chunks = 0
         self.index_chunk = 0
         self.chunks = []
         self.add_chunk(0)
         self.add_chunk(1)
 
-
     def add_chunk(self, difficulty):
-        object_list = [Obstacle((300, -90, 200, 50)), Obstacle((400, -270, 200, 50)), Obstacle((700, -100, 100, 50))] # fat jonas
+        index = len(self.chunks)
+        if index == 0:
+            object_list = [Obstacle((300, -100, 200, 50)), Obstacle((400, -270, 200, 50)), Obstacle((700, -100, 100, 50))]
+        elif index == 1:
+            object_list = [Obstacle((300, -100, 100, 50)), Obstacle((730, -360, 70, 50))]
+        elif index == 2:
+            object_list = [Obstacle((100, -100, 200, 50)), Obstacle((400, -200, 80, 100)), Obstacle((30, -400, 100, 50))]
+        else:
+            object_list = []
+            
         chunk = Chunk(len(self.chunks), difficulty, object_list)
         self.chunks.append(chunk)
         
     def update(self, x_position):
         self.index_chunk = x_position // 1000
-        if self.index_chunk + 1 == len(self.chunks):
+        if self.index_chunk + 1 == len(self.chunks): # kommt als nächstes in neuen chunk
             self.add_chunk(0)
             #generate new chunk
             # Bereich 5 4000 - 5000 (4 Chunks)
@@ -42,6 +49,5 @@ class World:
             obstacles += self.chunks[self.index_chunk - 1].get_obstacles()
             obstacles += self.chunks[self.index_chunk].get_obstacles()
             obstacles += self.chunks[self.index_chunk + 1].get_obstacles()
-        # print(obstacles)
-        # print('\n\n')
+            
         return obstacles
