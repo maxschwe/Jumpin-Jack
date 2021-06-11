@@ -11,7 +11,7 @@ class World:
 
 
     def add_chunk(self, difficulty):
-        object_list = [Obstacle((300, -100, 200, 50)), Obstacle((400, -270, 200, 50)), Obstacle((700, -100, 100, 50))] # fat jonas
+        object_list = [Obstacle((300, -90, 200, 50)), Obstacle((400, -270, 200, 50)), Obstacle((700, -100, 100, 50))] # fat jonas
         chunk = Chunk(len(self.chunks), difficulty, object_list)
         self.chunks.append(chunk)
         

@@ -3,7 +3,7 @@ import sys
 import os
 import pygame
 # sys.path.append(os.path.realpath('../JumpingJack'))
-from Model.modelbeobachter import ModelBeobachter
+from View.modelbeobachter import ModelBeobachter
 
 
 HITBOXES_ON = False
@@ -17,9 +17,9 @@ class View(ModelBeobachter):
         self.model.add_observer(self)
         self.dimensions = self.model.get_dimension()
         self.window = pygame.display.set_mode(self.dimensions)
+
         pygame.display.set_caption("Jumpin' Jack")
         pygame.init()
-        self.repaint()
 
     def repaint(self):
         self.window.fill((0, 0, 0))
@@ -32,6 +32,7 @@ class View(ModelBeobachter):
         self.window.blit(self.model.background, (- (self.model.x % self.model.width), 0))
         self.window.blit(self.model.background, (self.model.width - (self.model.x % self.model.width), 0))
         
+    
     def repaint_player(self):
         rect = self.reposition(self.model.player.coords, False)
         self.window.blit(self.model.player.current_animation, rect)
@@ -52,6 +53,17 @@ class View(ModelBeobachter):
             return rect.move(self.player_left - self.model.x, self.player_bottom)
         else:
             return rect.move(self.player_left, self.player_bottom)
+
+    def show_start_screen(self):
+        game_over_text = pygame.font.SysFont(None, 80)
+        textsurface = game_over_text.render('Start Game!', True, (255,255,255))
+        self.window.blit(textsurface, ((self.dimensions[0]/2 - textsurface.get_rect().width/2,self.dimensions[1]/2-textsurface.get_rect().height/2 - 40)))
+        # startButton = getButton(500, 350, 80, 30)
+        pygame.display.update()
+
+    def getButton(self, x, y, width, height):
+
+        return pygame.rect(x,y,width,height)
          
     def show_death_screen(self):
         game_over_text = pygame.font.SysFont(None, 80)
@@ -63,4 +75,3 @@ class View(ModelBeobachter):
 
     def update(self):
         self.repaint()
-            

@@ -13,7 +13,7 @@
     },
 
     {
-      "name": "Python: Aktuelle Datei",
+      "name": "Python: Main.py",
       "type": "python",
       "request": "launch",
       "program": "main.py",

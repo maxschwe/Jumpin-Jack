@@ -18,7 +18,7 @@ class Model:
         self.jumping = False
         self.player = Player((0, 0, 120, 120), (35, 29, 50, 93), jump_force=20, gravity=1)
         self.world = World()
-        self.alive = True
+        self.alive = False
         
     def add_observer(self, observer): 
         self.observers.append(observer)
@@ -62,7 +62,7 @@ class Model:
     def get_obstacles_view(self):
         return self.world.get_current_obstacles_view()
 
-    def update(self):
+    def update_game(self):
         self.dx = self.player.update(self.x, self.y, self.dx, self.world.get_current_obstacles(self.x + self.dx, self.player.hitbox.width))
         self.x += self.dx
         self.y += self.dy

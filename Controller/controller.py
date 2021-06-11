@@ -10,10 +10,12 @@ class Controller:
         self.fps = fps
         self.clock = pygame.time.Clock()
         self.running = True
-        self.alive = True
+        self.start = True
+        self.alive = False
         
     def run(self):
-        while self.running: 
+        self.view.show_start_screen()
+        while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
@@ -25,14 +27,18 @@ class Controller:
                     self.alive = self.model.right_key()         
                 if keys[K_SPACE]:
                     self.model.space_key()
-                if not self.alive:
-                    self.view.show_death_screen()
-            
             if keys[K_RETURN]:
                 self.model.restart()
+                self.start = False
                 self.alive = True
+            elif keys[K_ESCAPE]:
+                self.running = False
+                continue
 
-            self.model.update()
+            if self.alive:
+                self.model.update_game()
             self.clock.tick(self.fps)
         
+
+    
     

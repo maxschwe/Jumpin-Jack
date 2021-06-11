@@ -23,6 +23,8 @@ class Player(Entity):
         if not self.jumping: # if not in air
             self.jumping = True
             self.vel_y = -self.jump_force
+            self.walk_pos = 0
+        self.update_current_animation()
             
     def left(self): # animation
         if not self.jumping:
@@ -34,6 +36,7 @@ class Player(Entity):
                 self.walk_pos = 0
         else:
             self.walk_pos = 0
+
         if self.walk_dir == "right":
             self.walk_dir = "left"
         self.update_current_animation()
@@ -46,6 +49,9 @@ class Player(Entity):
                 self.walk_pos += 1
             else:
                 self.walk_pos = 0
+        else:
+            self.walk_pos = 0
+        
         if self.walk_dir == "left":
             self.walk_dir = "right"
             
@@ -67,6 +73,20 @@ class Player(Entity):
         
     def adjust_collision_values(self, x_screen, y_screen, dx_screen, current_obstacles):
         # check if player collides with objects by y-direction
+        predicted_rect = self.hitbox.copy()
+        predicted_rect.x += x_screen + dx_screen
+        predicted_rect.y += self.dy
+
+        # check if player is on bottom
+        if predicted_rect.bottom > y_screen:
+            self.hitbox.bottom = y_screen
+            self.coords.bottom = y_screen
+            self.dy = 0
+            self.jumping = False
+            is_on_bottom = True
+        else:
+            is_on_bottom = False
+
         collided = False
         for obstacle in current_obstacles:
             predicted_rect = self.hitbox.copy()
@@ -86,14 +106,10 @@ class Player(Entity):
             
                 elif (self.hitbox.left + x_screen) >= obstacle.hitbox.right and predicted_rect.left < obstacle.hitbox.right: # move left
                     dx_screen = obstacle.hitbox.right - (self.hitbox.left + x_screen)
-        self.jumping = not collided
-        
-        # check if player is on bottom
-        if predicted_rect.bottom > y_screen:
-            self.hitbox.bottom = y_screen
-            self.coords.bottom = y_screen
-            self.dy = 0
+        if collided:
             self.jumping = False
+        elif not is_on_bottom:
+            self.jumping = True
             
         if predicted_rect.left < 0:
             dx_screen = - self.hitbox.left
