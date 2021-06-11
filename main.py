@@ -2,8 +2,8 @@ from Controller.controller import Controller
 
 WIDTH = 1000
 HEIGHT = 800
-FPS = 40
-SPEED = 6
+FPS = 60
+SPEED = 10
 PLAYER_X = 300
 PLAYER_Y = 610
 
