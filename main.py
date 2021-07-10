@@ -1,4 +1,10 @@
 from Controller.controller import Controller
+import pygame
+import random
+import time
+
+pygame.init()
+random.seed(time.time())
 
 WIDTH = 1000
 HEIGHT = 800

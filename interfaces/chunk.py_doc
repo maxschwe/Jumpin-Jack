@@ -1,0 +1,3 @@
+Klasse Chunk:
+    Methode __init__(self, index, object_list=[])
+    Methode get_obstacles(self)

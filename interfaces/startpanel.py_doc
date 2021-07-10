@@ -1,0 +1,5 @@
+Klasse StartPanel(Panel):
+    Methode __init__(self,window,dimensions)
+    Methode draw(self)
+    Methode on_keypress(self, key)
+    Methode select(self, index)

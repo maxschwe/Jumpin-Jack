@@ -1,0 +1,6 @@
+Klasse Button:
+    Methode __init__(self, x, y, width, height, col)
+    Methode check_if_clicked(self, x, y)
+    Methode get_rect(self)
+    Methode setBorder(self,visibility)
+    Methode draw(self, window)

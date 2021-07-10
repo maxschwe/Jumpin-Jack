@@ -1,0 +1,4 @@
+Klasse DeathPanel(Panel):
+    Methode __init__(self, window, dimensions)
+    Methode draw(self)
+    Methode set_score(self, score, updated)

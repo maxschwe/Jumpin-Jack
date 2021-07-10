@@ -1,0 +1,3 @@
+Klasse Controller:
+    Methode __init__(self, width, height, fps, speed, player_left, player_bottom)
+    Methode run(self)

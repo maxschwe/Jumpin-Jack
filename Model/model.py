@@ -1,4 +1,8 @@
 import pygame
+import json
+import random
+import time
+
 from Model.Entity.player import Player
 from Model.Entity.obstacle import Obstacle
 from Model.world.world import World
@@ -7,19 +11,22 @@ class Model:
     def __init__(self, width, height, speed):
         self.width = width
         self.height = height
+        self.load_data()
         self.observers = []
         background_unscaled = pygame.image.load("Images/hintergrund.png")
+        startscreen_unscaled = pygame.image.load("Images/startscreen.png")
         self.background = pygame.transform.scale(background_unscaled, (self.width, self.height))
-        self.objects_img = pygame.image.load("Images/objects.png")
-        self.objects_img = pygame.transform.scale(self.objects_img, (1000, 400))
+        self.start_screen = pygame.transform.scale(startscreen_unscaled, (self.width, self.height))
         self.x = 0
         self.y = 0
         self.dx = 0
         self.dy = 0
+        self.score = 0
         self.speed = speed
         self.jumping = False
-        self.player = Player((0, 0, 120, 120), (35, 29, 50, 93), jump_force=20, gravity=1)
+        self.player = Player((0, 0, 120, 120), (27, 0, 66, 120), jump_force=20, gravity=1)
         self.world = World()
+        self.start = True
         self.alive = False
         
     def add_observer(self, observer): 
@@ -62,17 +69,55 @@ class Model:
         return self.world.get_current_obstacles_view()
 
     def update_game(self):
-        self.dx = self.player.update(self.x, self.y, self.dx, self.world.get_current_obstacles(self.x + self.dx, self.player.hitbox.width))
+        self.dx, death = self.player.update(self.x, self.y, self.dx, self.world.get_current_obstacles(self.x + self.dx, self.player.hitbox.width))
         self.x += self.dx
         self.y += self.dy
         self.world.update(self.x)
+        
+        if death:
+            self.alive = False
+            updated = self.updateHighscore()
+            for observer in self.observers:
+                observer.panel.draw()
+                observer.change_panel(2)
+                observer.panel.set_score(self.score, updated)
+                observer.panel.draw()
+                pygame.display.update()
         if self.alive:
             self.update_observers()
         self.dx = 0
         self.dy = 0
 
-    def restart(self):
+    def restart_game(self):
+        self.start = False
         self.alive = True
+        self.world.reset()
+
         self.x = 0
-    
-                
+        for observer in self.observers:
+            observer.change_panel(1)
+
+    def load_data(self):
+        try:
+            with open("model/data/scores.json") as f:
+                data = json.load(f)
+            self.highscore = data["highscore"]
+        except:
+            self.highscore = 0
+            self.save_data()
+
+    def updateHighscore(self):
+        updated = False
+        score = int(self.x/10) * 10
+        if score > self.highscore:
+            updated = True
+            self.highscore = score
+        self.score = score
+        self.save_data()
+        return updated
+
+    def save_data(self):
+        data = {}
+        data["highscore"] = self.highscore
+        with open("model/data/scores.json", "w") as f:
+            json.dump(data, f, indent=4)

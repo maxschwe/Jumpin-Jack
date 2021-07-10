@@ -1,0 +1,2 @@
+Klasse Obstacle(Entity):
+    Methode __init__(self, hitbox_coords, object_img_path, death=False)

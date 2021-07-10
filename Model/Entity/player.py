@@ -1,7 +1,7 @@
 import pygame
 from Model.Entity.entity import Entity
 
-AMOUNT_PICTURES = 9
+AMOUNT_PICTURES = 12
 PATH_IMAGES = "Images/Player/"
 
 class Player(Entity):
@@ -35,7 +35,7 @@ class Player(Entity):
             else:
                 self.walk_pos = 0
         else:
-            self.walk_pos = 0
+            self.walk_pos = 12
 
         if self.walk_dir == "right":
             self.walk_dir = "left"
@@ -50,7 +50,7 @@ class Player(Entity):
             else:
                 self.walk_pos = 0
         else:
-            self.walk_pos = 0
+            self.walk_pos = 12
         
         if self.walk_dir == "left":
             self.walk_dir = "right"
@@ -88,12 +88,15 @@ class Player(Entity):
             is_on_bottom = False
 
         collided = False
+        death = False
         for obstacle in current_obstacles:
             predicted_rect = self.hitbox.copy()
             predicted_rect.x += x_screen + dx_screen
             predicted_rect.y += self.dy
             
             if obstacle.check_collision(predicted_rect):
+                if obstacle.death:
+                    death = True
                 if self.hitbox.bottom <= obstacle.hitbox.top and predicted_rect.bottom > obstacle.hitbox.top: #previous above, now collided (jumps from above)
                     collided = True
                     self.dy = obstacle.hitbox.top - self.hitbox.bottom
@@ -106,28 +109,31 @@ class Player(Entity):
             
                 elif (self.hitbox.left + x_screen) >= obstacle.hitbox.right and predicted_rect.left < obstacle.hitbox.right: # move left
                     dx_screen = obstacle.hitbox.right - (self.hitbox.left + x_screen)
+        old_jumping = self.jumping
         if collided:
             self.jumping = False
         elif not is_on_bottom:
             self.jumping = True
+        if not self.jumping and old_jumping:
+            self.walk_pos = 0
+            self.update_current_animation()
+        
             
         if predicted_rect.left < 0:
             dx_screen = - self.hitbox.left
         
-        return dx_screen
+        return dx_screen, death
             
     def update(self, x_screen, dx_screen, y_screen, current_obstacles):
         self.dy = 0
         self.physics()
-        dx_screen = self.adjust_collision_values(x_screen, dx_screen, y_screen, current_obstacles)
+        dx_screen, death = self.adjust_collision_values(x_screen, dx_screen, y_screen, current_obstacles)
         self.move(0, self.dy)
-        return dx_screen
-        # self.check_collision_horizontal(x_pos_player)
+        return dx_screen, death
     
     def load_animation_img(self):
         for key, img_list in {"L":self.facing_left_img, "R":self.facing_right_img}.items():
-            for i in range(1, AMOUNT_PICTURES + 1):
+            for i in range(1, AMOUNT_PICTURES + 2):
                 img = pygame.image.load(f"{PATH_IMAGES}{key}{str(i)}.png")
                 img = pygame.transform.scale(img, (self.coords.width, self.coords.height))
                 img_list.append(img)
-        

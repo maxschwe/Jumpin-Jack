@@ -1,0 +1,6 @@
+Klasse View(ModelBeobachter):
+    Methode __init__(self, model, player_left, player_bottom)
+    Methode repaint(self)
+    Methode update(self)
+    Methode update_start_screen(self,key)
+    Methode change_panel(self, i)
