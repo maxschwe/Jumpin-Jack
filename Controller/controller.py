@@ -4,8 +4,8 @@ import pygame
 from pygame.constants import *
 
 class Controller:
-    def __init__(self, width, height, fps, speed, player_left, player_bottom):
-        self.model = Model(width, height, speed)
+    def __init__(self, width, height, fps, speed, jump_force, gravity, player_left, player_bottom):
+        self.model = Model(width, height, speed, jump_force, gravity)
         self.view = View(self.model, player_left, player_bottom)
         self.fps = fps
         self.clock = pygame.time.Clock()
@@ -40,7 +40,7 @@ class Controller:
                 if clicked:
                     if self.view.panel.startButton.check_if_clicked(*click_pos):
                         self.model.restart_game()
-                    elif self.view.panel.settingsButton.check_if_clicked(*click_pos):
+                    elif self.view.panel.exitButton.check_if_clicked(*click_pos):
                         exit()
                 
                 if keys[K_UP]:
@@ -59,7 +59,3 @@ class Controller:
             if self.model.alive:
                 self.model.update_game()
             self.clock.tick(self.fps)
-        
-
-    
-    

@@ -1,8 +1,0 @@
-Klasse Enemy(Entity):
-    Methode __init__(self, coords, hitbox)
-    Methode left(self) # animation
-    Methode right(self)
-    Methode update_current_animation(self)
-    Methode adjust_collision_values(self, x_screen, y_screen, dx_screen, current_obstacles)
-    Methode update(self, x_screen, dx_screen, y_screen, current_obstacles)
-    Methode load_animation_img(self)

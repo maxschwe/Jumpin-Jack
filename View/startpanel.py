@@ -12,8 +12,14 @@ class StartPanel(Panel):
         self.dimensions = dimensions
         self.startscreen = startscreen
 
-        self.startButton = Button(self.dimensions[0]/2 - WIDTH_BTN/2, self.dimensions[1]/2-HEIGHT_BTN/2 + 50, WIDTH_BTN, HEIGHT_BTN, "green")
-        self.settingsButton = Button(self.dimensions[0]/2 - WIDTH_BTN/2, self.dimensions[1]/2-HEIGHT_BTN/2+120, WIDTH_BTN, HEIGHT_BTN, "red")
+        start_btn_unscaled = pygame.image.load("Images/startscreen/start.png")
+        start_btn = pygame.transform.scale(start_btn_unscaled, (WIDTH_BTN, HEIGHT_BTN))
+
+        exit_btn_unscaled = pygame.image.load("Images/startscreen/exit.png")
+        exit_btn = pygame.transform.scale(exit_btn_unscaled, (WIDTH_BTN, HEIGHT_BTN))
+
+        self.startButton = Button(self.dimensions[0]/2 - WIDTH_BTN/2, self.dimensions[1]/2-HEIGHT_BTN/2 + 50, WIDTH_BTN, HEIGHT_BTN, start_btn)
+        self.exitButton = Button(self.dimensions[0]/2 - WIDTH_BTN/2, self.dimensions[1]/2-HEIGHT_BTN/2+120, WIDTH_BTN, HEIGHT_BTN, exit_btn)
 
         self.select(0)
         self.draw()
@@ -24,7 +30,7 @@ class StartPanel(Panel):
         self.window.blit(self.startscreen, (0, 0))
 
         self.startButton.draw(self.window)
-        self.settingsButton.draw(self.window)
+        self.exitButton.draw(self.window)
 
     def on_keypress(self, key):
         if key == K_UP:
@@ -36,8 +42,8 @@ class StartPanel(Panel):
         if index == 0:
             self.selected = 0
             self.startButton.setBorder(True)
-            self.settingsButton.setBorder(False)
+            self.exitButton.setBorder(False)
         else:
             self.selected = 1
             self.startButton.setBorder(False)
-            self.settingsButton.setBorder(True)
+            self.exitButton.setBorder(True)

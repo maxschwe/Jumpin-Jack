@@ -113,7 +113,9 @@ class World:
                 first = False
                 # random_x = 0
             else:
-                random_x = self.vorgänger[0] + self.vorgänger[2] + random.randint(DISTANCE_MIN, DISTANCE_MAX)
+                random_x = self.vorgänger[0] + self.vorgänger[2]
+
+            random_x +=  random.randint(DISTANCE_MIN, DISTANCE_MAX)
             ground_floating_randint = random.randint(0, 9)
 
             if ground_floating_randint > 5:  # ground
@@ -143,7 +145,7 @@ class World:
                 object_list.append(obstacle)
                 self.vorgänger = current[:]
                 space_available = False
-                self.random_x_first = random_x + width - 900
+                self.random_x_first = random_x + width - 1000
             else:
                 current = [random_x, random_y, width, height]
                 object_list.append(Obstacle(current, path, death))
@@ -151,11 +153,4 @@ class World:
             if not space_available:
                 self.vorgänger[0] = 0
 
-        '''spawnable_obstacles = [] # 0:obstacle, 1: index of object_list
-        for i in range(len(object_list)):
-            if not object_list[i].death:
-                spawnable_obstacles.append(object_list[i])
-
-        pos_enemy = random.randint(0, len(spawnable_obstacles)-1)
-        spawnable_obstacles[pos_enemy].spawn_enemy()'''
         return object_list

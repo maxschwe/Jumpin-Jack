@@ -1,7 +1,0 @@
-Klasse GamePanel(Panel):
-    Methode __init__(self, window, dimensions, player_left, player_bottom, model)
-    Methode repaint_background(self)
-    Methode repaint_player(self)
-    Methode repaint_obstacles(self)
-    Methode reposition(self, rect, relative=True)
-    Methode draw(self)

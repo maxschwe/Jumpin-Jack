@@ -4,4 +4,3 @@ class Panel:
     @abstractmethod
     def draw(self):
         pass
-    

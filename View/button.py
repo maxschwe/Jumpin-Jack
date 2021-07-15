@@ -1,12 +1,12 @@
 import pygame
 
 class Button:
-    def __init__(self, x, y, width, height, col):
+    def __init__(self, x, y, width, height, img):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.color = col
+        self.img = img
         self.square = self.get_rect()
         self.border = False
 
@@ -20,8 +20,6 @@ class Button:
         self.border = visibility
 
     def draw(self, window):
-        print("BUTTON1")
-        pygame.draw.rect(window, self.color, self.square)
+        window.blit(self.img, self.square)
         if self.border:
-            print("BUTTON2")
-            pygame.draw.rect(window, "blue", self.square, 2 if self.border else 0)
+            pygame.draw.rect(window, "white", self.square, 2 if self.border else 0)

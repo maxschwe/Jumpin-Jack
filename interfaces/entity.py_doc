@@ -1,4 +1,0 @@
-Klasse Entity:
-    Methode __init__(self, coords, coords_hitbox=())
-    Methode move(self, x, y)
-    Methode check_collision(self, object_hitbox)

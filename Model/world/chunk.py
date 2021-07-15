@@ -10,4 +10,4 @@ class Chunk:
 
     def get_obstacles(self):
         return self.object_list[:]
-            
+    

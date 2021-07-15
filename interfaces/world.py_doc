@@ -1,9 +1,0 @@
-Klasse World:
-    Methode __init__(self)
-    Methode add_chunk(self)
-    Methode update(self, x_position)
-    Methode get_current_obstacles(self, x_position, player_width)
-    Methode get_current_obstacles_view(self)
-    Methode load_floating_objects(self)
-    Methode load_ground_objects(self)
-    Methode generate_objects(self)
